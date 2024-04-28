@@ -69,6 +69,7 @@ export class Blog {
       console.log("ボタンなし");
       return await Promise.reject(new Error("タグがない"));
     }
+    
     await update_btn.click();
     const btn_list = await this.page.$$("li.form__submit");
     await btn_list[0].click(); //1回目の確認
@@ -80,10 +81,12 @@ export class Blog {
     const check = "div.done_area_inline > p.parts__text";
     await this.page.locator("div.done_area_inline > p.parts__text").waitFor();
     const chinko = await this.page.$(check);
+
     if (chinko == null) {
       console.log("ボタンなし");
       return await Promise.reject(new Error("タグがない"));
     }
+
     if (
       (await chinko.textContent()) ==
       "日記の編集が完了しました。\n下書きの場合は他人から閲覧されることはありません。"
@@ -92,6 +95,7 @@ export class Blog {
     } else {
       return await Promise.reject(new Error("この世の終わり"));
     }
+
     await this.context.storageState({ path: this.path });
     await this.context.close();
     await this.browser.close();
